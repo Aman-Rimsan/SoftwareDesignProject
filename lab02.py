@@ -1,68 +1,125 @@
-import csv 
+import csv
 
-# Open and read the CSV file
-with open('data.csv', 'r') as file:
-    csv_reader = csv.DictReader(file)  # Read file as a dictionary
-    data = [row for row in csv_reader]  # Store CSV content in a list of dictionaries
+class ProductDatabase:
+    def __init__(self, filename="Estock.csv"):
+        # Initialize the database with a filename and read existing data
+        self.filename = filename
+        self.products = []
+        self.read_file()
+    
+    def read_file(self):
+        # Read product data from the CSV file
+        try:
+            with open(self.filename, mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                self.products = [{"name": row["name"].strip().lower(), 
+                                  "price": float(row["price"]), 
+                                  "stock": int(row["stock"])} for row in reader]
+            print("\nFile read successfully.")
+        except FileNotFoundError:
+            print("\nFile not found. Creating a new one with sample data.")
+            self.create_sample_data()
+        except Exception as e:
+            print(f"Error reading file: {e}")
+    
+    def write_file(self):
+        # Write product data back to the CSV file
+        try:
+            with open(self.filename, mode='w', newline='') as file:
+                fieldnames = ["name", "price", "stock"]
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(self.products)
+        except Exception as e:
+            print(f"Error writing to file: {e}")
+    
+    def view_products(self):
+        # Display all products in the inventory
+        if not self.products:
+            print("\nNo products available.")
+            return
+        print("\nInventory:")
+        print(f"{'Name':<15} {'Price':<10} {'Stock':<10}")
+        print("="*35)
+        for product in self.products:
+            print(f"{product['name']:<15} ${product['price']:<10.2f} {product['stock']:<10}")
 
-# Display menu options
-print("1. Display items")
-print("2. Edit existing item")
-print("3. Add new item")
-print("4. Exit program")
-user_input = int(input("Enter: "))  # Get user choice
-
-# Loop until user chooses to exit
-while user_input != 4:
-    if user_input == 1:
-        # Display all items in the CSV file
-        for row in data:
-            for key, value in row.items():
-                print(f"{key}: {value}", end=" ")  # Print key-value pairs
-            print()  # New line after each row
-    elif user_input == 2:
-        # Edit an existing item
-        print("Which person you like to edit? (Type the name): ")
-        name = input("Enter: ").strip()
-        print("What would you like to edit? [Name, Age, ID, Gender, Program]")
-        change = input("Enter: ").strip()
-        print("What should it be? ")
-        changed_item = input("Enter: ").strip()
+    def add_product(self):
+        # Add a new product to the inventory
+        name = input("Enter product name: ").strip().lower()
+        if any(p['name'] == name for p in self.products):
+            print("Product already exists.")
+            return
+        try:
+            price = float(input("Enter product price: "))
+            stock = int(input("Enter initial stock: "))
+            if price < 0 or stock < 0:
+                print("Stock and price must be non-negative.")
+                return
+        except ValueError:
+            print("Invalid input. Price must be a number, stock must be an integer.")
+            return
         
-        # Search for the person by name and update the specified field
-        for row in data:
-            if row["Name"].lower() == name.lower():
-                row[change] = changed_item
-    elif user_input == 3:
-        # Add a new item to the data list
-        name = input("Enter name: ").strip()
-        age = input("Enter age: ").strip()
-        identity = input("Enter id: ").strip()
-        gender = input("Enter gender: ").strip()
-        program = input("Enter program: ").strip()
+        self.products.append({"name": name, "price": price, "stock": stock})
+        self.write_file()
+        print(f"Product '{name}' added successfully.")
 
-        new_item = {
-            "Name": name,
-            "Age": age,
-            "ID": identity,
-            "Gender": gender,
-            "Program": program
-        }
-        data.append(new_item)  # Append new data entry
-        print("New item added successfully.")
+    def edit_product(self):
+        # Edit an existing product in the inventory
+        name = input("Enter product name to edit: ").strip().lower()
+        for product in self.products:
+            if product['name'] == name:
+                try:
+                    new_price = float(input(f"Enter new price for {name} (current: {product['price']}): "))
+                    new_stock = int(input(f"Enter new stock for {name} (current: {product['stock']}): "))
+                    if new_price < 0 or new_stock < 0:
+                        print("Price and stock must be non-negative.")
+                        return
+                    product['price'] = new_price
+                    product['stock'] = new_stock
+                    self.write_file()
+                    print(f"Product '{name}' updated successfully.")
+                    return
+                except ValueError:
+                    print("Invalid input. Please enter valid numbers.")
+                    return
+        print(f"Product '{name}' not found.")
+    
+    def search_products(self):
+        # Search for products by name or keyword
+        keyword = input("Enter product name or keyword to search: ").strip().lower()
+        results = [p for p in self.products if keyword in p['name']]
+        if results:
+            print("\nSearch Results:")
+            for product in results:
+                print(f"{product['name']} - ${product['price']} - Stock: {product['stock']}")
+        else:
+            print("No matching products found.")
 
-    # Reprint menu after an operation
-    print("\n1. Display items")
-    print("2. Edit existing item")
-    print("3. Add new item")
-    print("4. Exit program")
-    user_input = int(input("Enter: "))
+def main_menu():
+    # Main menu loop for user interaction
+    db = ProductDatabase()
+    while True:
+        print("\nInventory Management System")
+        print("1. View Products")
+        print("2. Add Product")
+        print("3. Edit Product")
+        print("4. Search Products")
+        print("5. Exit")
+        choice = input("Enter your choice: ").strip()
 
-# Save modified data back to the CSV file
-with open('data.csv', 'w', newline='') as file:
-    fieldnames = data[0].keys()  # Get field names from the first dictionary entry
-    csv_writer = csv.DictWriter(file, fieldnames=fieldnames)
-    csv_writer.writeheader()  # Write the header row
-    csv_writer.writerows(data)  # Write all rows back to the CSV file
+        if choice == "1":
+            db.view_products()
+        elif choice == "2":
+            db.add_product()
+        elif choice == "3":
+            db.edit_product()
+        elif choice == "4":
+            db.search_products()
+        elif choice == "5":
+            print("Exiting program.")
+            break
+        else:
+            print("Invalid choice. Please try again.")
 
-print("Program exited.")
+main_menu()
