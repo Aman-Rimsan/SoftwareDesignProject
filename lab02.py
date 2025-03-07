@@ -45,7 +45,8 @@ class ProductDatabase:
             print(f"{product['name']:<15} ${product['price']:<10.2f} {product['stock']:<10}")
 
     def add_product(self):
-        # Add a new product to the inventory
+        
+    
         name = input("Enter product name: ").strip().lower()
         if any(p['name'] == name for p in self.products):
             print("Product already exists.")
@@ -87,6 +88,8 @@ class ProductDatabase:
     
     def search_products(self):
         # Search for products by name or keyword
+        #This function allows users to search for a product in the inventory using a keyword.
+        #It checks if the keyword exists in any product name and displays matching results.
         keyword = input("Enter product name or keyword to search: ").strip().lower()
         results = [p for p in self.products if keyword in p['name']]
         if results:
