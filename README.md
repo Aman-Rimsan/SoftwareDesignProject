@@ -5,10 +5,15 @@ The project involves developing an inventory tracking system tailored for a tech
 
 ## Roles 
 Project Manager: Abbas Akbar
+
 Technical Manager: Amanulla Mohammed Rimsan
+
 Front-End Lead: Lesley Ozurigbo
+
 Back-End Lead: Abdul Ghafour Ahmed
+
 Software Quality Lead: Ze Yu Shi
+
 Developers: All
 
 ## Software Notes
