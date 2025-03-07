@@ -130,7 +130,7 @@ def main_menu():
     while True:
         print("\nInventory Management System")
         print("1. View Products")
-        print("2. Product")
+        print("2. Add Product")
         print("3. Edit Product")
         print("4. Search Products")
         print("5. Filter Products")
