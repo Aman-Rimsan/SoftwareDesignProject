@@ -46,54 +46,71 @@ class ProductDatabase:
         for product in self.products:
             print(f"{product['name']:<15} ${product['price']:<10.2f} {product['stock']:<10}")
 
-    def add_product(self):
+    def add_product(self): # Prompt user for product name, remove extra spaces, and convert to lowercase for consistency
         name = input("Enter product name: ").strip().lower()
-        if any(p['name'] == name for p in self.products):
+        if any(p['name'] == name for p in self.products):  # Check if the product already exists in the product list
             print("Product already exists.")
-            return
+            return # Exit the function if the product is already in the list
+
         try:
+                    # Prompt user for price and stock, converting inputs to appropriate types
+
             price = float(input("Enter product price: "))
             stock = int(input("Enter initial stock: "))
-            if price < 0 or stock < 0:
+            if price < 0 or stock < 0:         # Ensure price and stock are non-negative values
+
                 print("Stock and price must be non-negative.")
                 return
         except ValueError:
             print("Invalid input. Price must be a number, stock must be an integer.")
             return
         
-        self.products.append({"name": name, "price": price, "stock": stock})
-        self.write_file()
+        self.products.append({"name": name, "price": price, "stock": stock})     # Add the new product to the list
+
+        self.write_file()     # Save updated product list to file
+
         print(f"Product '{name}' added successfully.")
 
     def edit_product(self):
+            # Prompt user for the product name they want to edit
+
         name = input("Enter product name to edit: ").strip().lower()
-        for product in self.products:
+        for product in self.products:     # Iterate through the list of products to find a match
+
             if product['name'] == name:
-                try:
+                try:                 # Prompt user for new price and stock, showing current values for reference
+
                     new_price = float(input(f"Enter new price for {name} (current: {product['price']}): "))
                     new_stock = int(input(f"Enter new stock for {name} (current: {product['stock']}): "))
-                    if new_price < 0 or new_stock < 0:
+                    if new_price < 0 or new_stock < 0:                 # Ensure new price and stock values are non-negative
+
                         print("Price and stock must be non-negative.")
                         return
-                    product['price'] = new_price
+                    product['price'] = new_price                 # Update product details
+
                     product['stock'] = new_stock
                     self.write_file()
                     print(f"Product '{name}' updated successfully.")
                     return
                 except ValueError:
-                    print("Invalid input. Please enter valid numbers.")
-                    return
-        print(f"Product '{name}' not found.")
+                    print("Invalid input. Please enter valid numbers.")  # Handle invalid input cases (non-numeric input)
 
-    def search_products(self):
+                    return
+        print(f"Product '{name}' not found.") # If product is not found in the list, print a message
+
+
+    def search_products(self):    # Prompt user for a keyword to search
+
         keyword = input("Enter product name or keyword to search: ").strip().lower()
         results = [p for p in self.products if keyword in p['name']]
-        if results:
+        if results:   # Find products whose name contains the keyword
+
             print("\nSearch Results:")
             for product in results:
                 print(f"{product['name']} - ${product['price']} - Stock: {product['stock']}")
         else:
-            print("No matching products found.")
+            print("No matching products found.")   # Print message if no matches are found
+
 
     def filter_products(self):  # filters all products based on the stock range and sorts them alphabetically if required.
         order = input("Sort alphabetically? (y/n): ").strip().lower() # Ask the user if they want to sort the results alphabetically, then get the minimum and maximum stock values.
