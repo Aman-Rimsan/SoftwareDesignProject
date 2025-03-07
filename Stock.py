@@ -171,6 +171,7 @@ UML Class Diagram
 | + add_product()     |
 | + edit_product()    |
 | + search_products() |
+| + filter_products() |
 +---------------------+
 
 
