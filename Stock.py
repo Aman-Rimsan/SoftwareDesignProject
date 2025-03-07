@@ -4,9 +4,8 @@ class ProductDatabase:
     
     #Class to manage product inventory stored in a CSV file.
 
-    def __init__(self, filename="Estock.csv"): 
-
-        '''constructor to initialize the class with the filename and products list'''
+    def __init__(self, filename="Estock.csv"):
+        
         #Initializes the ProductDatabase.
         #- filename: Name of the CSV file where product data is stored.
         #- products: List to store product data in memory.
@@ -20,21 +19,14 @@ class ProductDatabase:
         #Reads product data from the CSV file and stores it in the `products` list.
         #If the file is missing, it creates a new one with sample data.
         
-
         try:
             with open(self.filename, mode='r', newline='') as file:
                 reader = csv.DictReader(file)
                 # Store each product as a dictionary with lowercase names
                 self.products = [{"name": row["name"].strip().lower(), 
-                      
-                '''The product name is converted to lowercase and stripped of any unnecessary spaces (row["name"].strip().lower()).
-                The price is converted to a floating-point number (float(row["price"])).
-                The stock quantity is converted to an integer (int(row["stock"])).'''
-
                                   "price": float(row["price"]), 
                                   "stock": int(row["stock"])} for row in reader]
             print("\nFile read successfully.")
-
         except FileNotFoundError:
             print("\nFile not found. Creating a new one with sample data.")
             self.create_sample_data()  # Calls a method (not included) to create default data
@@ -46,14 +38,10 @@ class ProductDatabase:
         #Writes the current product list back to the CSV file.
         
         try:
-            with open(self.filename, mode='w', newline='') as file: # open the file in write mode and create a CSV writer object
-                # Define the CSV column headers
+            with open(self.filename, mode='w', newline='') as file:
                 fieldnames = ["name", "price", "stock"]
-                # These headers match the keys used in our product dictionary
                 writer = csv.DictWriter(file, fieldnames=fieldnames)
-                # Write the header and data to the file
                 writer.writeheader()  # Writing CSV column headers
-                # Writing product data to the file
                 writer.writerows(self.products)  # Writing product data to file
         except Exception as e:
             print(f"Error writing to file: {e}")
@@ -63,13 +51,13 @@ class ProductDatabase:
         #Displays all products in the inventory in a tabular format.
         
         if not self.products:
-            print("\nNo products available.") # If there are no products in the inventory, it displays a message and exits the method
+            print("\nNo products available.")
             return
-        print("\nInventory:") # Display the product inventory in a tabular format
+        print("\nInventory:")
         print(f"{'Name':<15} {'Price':<10} {'Stock':<10}")
-        print("="*35) # Display a line of equal signs to separate the header from the product data
-        for product in self.products:  
-            print(f"{product['name']:<15} ${product['price']:<10.2f} {product['stock']:<10}") # Display each product's name, price, and stock in a formatted manner
+        print("="*35)
+        for product in self.products:
+            print(f"{product['name']:<15} ${product['price']:<10.2f} {product['stock']:<10}")
 
     def add_product(self):
         
@@ -159,8 +147,6 @@ def main_menu():
 
 # Start the program
 main_menu()
-# The ProductDatabase validates the input to ensure it is correct. If the input is invalid, the user is prompted to enter the correct input. 
-# The product data is then saved to the CSV file, and a confirmation message is displayed to the user.
 
 '''
 UML Class Diagram
@@ -171,7 +157,7 @@ UML Class Diagram
 | products: list      |
 +---------------------+
 | + __init__()        |
-| + read_file()       | 
+| + read_file()       |
 | + write_file()      |
 | + view_products()   |
 | + add_product()     |
@@ -215,4 +201,3 @@ User          ProductDatabase
  |  Displays Results    |
  |<---------------------|
 '''
-
