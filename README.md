@@ -28,6 +28,8 @@ Edit Product: Enables modifications to the price and stock of existing products.
 
 Search Products: Allows users to find products by name or keyword.
 
+Filter Products: Allow user to search the product by the range of minimum and maximum stock
+
 Persistent Storage: Uses a CSV file (Estock.csv) to store product data.
 
 ## Installation
