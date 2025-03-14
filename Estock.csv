@@ -1,9 +1,21 @@
 name,price,stock
-keyboard,45.0,30
+amd radeon rx 7900 xtx,999.0,12
+amd ryzen 9 7950x,699.0,20
+asus rog strix x670e motherboard,499.0,10
+cooler master v1000 platinum psu,249.0,22
+corsair icue h150i liquid cooler,189.0,18
+corsair vengeance 32gb ddr5 ram,169.0,40
+g.skill trident z5 64gb ddr5 ram,329.0,25
 headphones,80.0,50
+intel core i9-13900k,589.0,15
+keyboard,45.0,30
 monitor,185.0,20
+msi meg z790 godlike motherboard,699.0,5
+nvidia rtx 4090,1599.0,8
+power bank,50.0,45
 printer,300.0,10
-selfphone,1300.0,2
-apple,12.5,125
-h,30.0,6
-milk,16.0,45
+samsung 990 pro 2tb nvme ssd,189.0,30
+seagate firecuda 4tb hdd,129.0,50
+usb flash drive,30.0,6
+wireless mouse,25.0,125
+smartphone,120.0,19

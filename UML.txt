@@ -1,0 +1,84 @@
+UML Class Diagram
++------------------------+
+|   ProductDatabase      |
++------------------------+
+| - filename: str       |
+| - products: list      |
++------------------------+
+| + __init__()          |
+| + read_file()         |
+| + write_file()        |
+| + view_products()     |
+| + add_product()       |
+| + edit_product()      |
+| + remove_product()    |
+| + sort_products()     |
+| + search_products()   |
++------------------------+
+
+
+UML Sequence Diagram for add_product
+
+User          ProductDatabase
+ |                  |
+ |  Enters Product  |  
+ |----------------->|
+ |  Validates Input |  
+ |----------------->|
+ |  Saves to CSV    |  
+ |----------------->|
+ |  Confirmation    |  
+ |<-----------------|
+
+
+UML Sequence Diagram for edit_product
+
+User            ProductDatabase
+ |                          |
+ |  Selects Product to Edit |
+ |------------------------> |
+ |  Updates Price/Stock     |
+ |------------------------->|
+ |  Saves Changes to CSV    |
+ |------------------------->|
+ |  Confirmation            |
+ |<-------------------------|
+
+UML Sequence Diagram for sort_products
+
+User            ProductDatabase
+ |                          |
+ |  Selects Sorting Option  |
+ |------------------------->|
+ |  Selects Sort Order      |
+ |------------------------->|
+ |  Sorts Products          |
+ |------------------------->|
+ |  Displays Sorted List    |
+ |<-------------------------|
+
+ UML Sequence Diagram for remove_product
+
+ User            ProductDatabase
+ |                           |
+ |  Enters Product to Remove |
+ |-------------------------> |
+ |  Searches for Product     |
+ |-------------------------> |
+ |  Removes Product          |
+ |-------------------------> |
+ |  Saves Changes to CSV     |
+ |-------------------------> |
+ |  Confirmation             |
+ |<------------------------- |
+
+UML Sequence Diagram for search_products
+
+User            ProductDatabase
+ |                             |
+ |  Enters Search Query        |
+ |---------------------------->|
+ |  Searches Matching Products |
+ |---------------------------->|
+ |  Displays Search Results    |
+ |<----------------------------|
