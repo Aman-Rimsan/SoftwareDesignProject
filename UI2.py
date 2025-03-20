@@ -66,13 +66,16 @@ class ProductDatabase:
         return f"Product '{name}' not found."
 
     def remove_product(self, name):
-        name = name.strip().lower()
-        initial_count = len(self.products)
-        self.products = [p for p in self.products if p['name'] != name]
-        if len(self.products) < initial_count:
+            name = input("Enter the product name to remove: ").strip().lower()
+            matching_products = [p for p in self.products if p['name'] == name]
+
+            if not matching_products:
+                print(f"Product '{name}' not found.")
+                return
+
+            self.products = [p for p in self.products if p['name'] != name]
             self.write_file()
-            return f"Product '{name}' removed successfully."
-        return f"Product '{name}' not found."
+            print(f"Product '{name}' removed successfully.")
 
     def sort_products(self, option, order):
         reverse_order = (order == "desc")
@@ -156,7 +159,10 @@ class InventoryGUI:
             tk.Button(button_frame, text=text, command=command).pack(side='left', padx=5)
 
     def apply_theme(self):
+        # Update the background color of the main window
         self.master.config(bg=self.current_theme['bg'])
+
+        # Update all child widgets
         for widget in self.master.winfo_children():
             if isinstance(widget, tk.Frame):
                 widget.config(bg=self.current_theme['bg'])
@@ -164,10 +170,29 @@ class InventoryGUI:
                     if isinstance(child, tk.Button):
                         child.config(bg=self.current_theme['button_bg'], fg=self.current_theme['button_fg'])
             elif isinstance(widget, ttk.Treeview):
+                # Update Treeview style for dark mode
                 style = ttk.Style()
-                style.configure("Treeview", background=self.current_theme['tree_bg'], foreground=self.current_theme['tree_fg'])
-                style.configure("Treeview.Heading", background=self.current_theme['tree_heading_bg'], foreground=self.current_theme['tree_heading_fg'])
+                style.theme_use("default")
+                style.configure("Treeview", 
+                                background=self.current_theme['tree_bg'], 
+                                foreground=self.current_theme['tree_fg'],
+                                fieldbackground=self.current_theme['tree_bg'])
+                style.configure("Treeview.Heading", 
+                                background=self.current_theme['tree_heading_bg'], 
+                                foreground=self.current_theme['tree_heading_fg'],
+                                font=('Arial', 10, 'bold'))  # Make column headers bold for better visibility
                 widget.config(style="Treeview")
+
+        # Ensure the background updates dynamically when resizing
+        self.master.update_idletasks()
+        self.master.config(bg=self.current_theme['bg'])
+
+    def update_background(self, event=None):
+        # Ensure the background color of the resized window matches the current theme
+        self.master.config(bg=self.current_theme['bg'])
+        for widget in self.master.winfo_children():
+            if isinstance(widget, tk.Frame):
+                widget.config(bg=self.current_theme['bg'])
 
     def toggle_dark_mode(self):
         if self.current_theme == self.light_mode:
@@ -242,12 +267,8 @@ class InventoryGUI:
 
         tk.Button(edit_window, text="Submit", command=submit).grid(row=3, columnspan=2, pady=10)
 
-    def remove_product(self):
-        name = simpledialog.askstring("Remove Product", "Enter product name to remove:")
-        if name:
-            result = self.db.remove_product(name)
-            messagebox.showinfo("Result", result)
-            self.update_display()
+    def remove_product(self, name):
+        print("in works!")
 
     def open_sort_window(self):
         sort_window = tk.Toplevel(self.master)

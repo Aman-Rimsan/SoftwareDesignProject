@@ -66,13 +66,7 @@ class ProductDatabase:
         return f"Product '{name}' not found."
 
     def remove_product(self, name):
-        name = name.strip().lower()
-        initial_count = len(self.products)
-        self.products = [p for p in self.products if p['name'] != name]
-        if len(self.products) < initial_count:
-            self.write_file()
-            return f"Product '{name}' removed successfully."
-        return f"Product '{name}' not found."
+        print("in works!")
 
     def sort_products(self, option, order):
         reverse_order = (order == "desc")
