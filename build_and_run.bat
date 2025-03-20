@@ -1,29 +1,46 @@
 @echo off
 REM filepath: c:\Users\ahmed\Downloads\Software Design And Analysis\SoftwareDesignProject\build_and_run.bat
 
-REM Step 1: Check Python installation
-python --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Python is not installed. Please install Python and try again.
-    exit /b 1
-)
+:menu
+echo.
+echo Select an option:
+echo 1. Run Stock.py
+echo 2. Run UI2.py
+echo 3. Install dependencies
+echo 4. Clean up temporary files
+echo 5. Exit
+set /p choice=Enter your choice: 
 
-REM Step 2: Install required dependencies (if any)
-echo Installing required dependencies...
-pip install -r requirements.txt >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Failed to install dependencies. Ensure pip is installed and try again.
-    exit /b 1
-)
+if "%choice%"=="1" goto run_stock
+if "%choice%"=="2" goto run_ui
+if "%choice%"=="3" goto install
+if "%choice%"=="4" goto clean
+if "%choice%"=="5" goto exit
+echo Invalid choice. Please try again.
+goto menu
 
-REM Step 3: Run the program
-echo Running the Inventory Management System...
+:run_stock
 python Stock.py
-if %errorlevel% neq 0 (
-    echo Failed to run the program. Check for errors in Stock.py.
-    exit /b 1
-)
+goto menu
 
-REM Step 4: Completion message
-echo Program executed successfully.
-pause
+:run_ui
+python UI2.py
+goto menu
+
+:install
+if exist requirements.txt (
+    python -m pip install -r requirements.txt
+) else (
+    echo No requirements.txt found. Skipping dependency installation.
+)
+goto menu
+
+:clean
+echo Cleaning up...
+del /q *.pyc 2>nul || echo No .pyc files to delete.
+rmdir /q /s __pycache__ 2>nul || echo No __pycache__ directory to delete.
+echo Cleanup complete.
+goto menu
+
+:exit
+echo Exiting...
