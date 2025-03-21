@@ -62,3 +62,30 @@ Option 4: Searches for products based on user input.
 Option 5: Using filter to allow user to find the stock by the range of it
 
 Option 6: Exits the program.
+
+## Makefile
+This project includes a Makefile to simplify running scripts and managing the environment. Below is a breakdown of the available commands and what each one does:
+
+Variables
+
+1. PYTHON: Specifies the Python interpreter to use (default is python).
+2. STOCK_SCRIPT: The Python script that runs stock-related logic (Stock.py).
+3. UI_SCRIPT: The Python script for the user interface (UI2.py).
+4. REQUIREMENTS: The dependencies file (requirements.txt).
+
+Available Commands
+1. make run_stock
+Runs the Stock.py script.
+
+2. make run_ui
+Runs the UI2.py script. This is the default command when you run make without arguments.
+
+3. make install
+Installs dependencies listed in requirements.txt. If the file is not found, it skips installation and shows a message.
+
+4. make clean
+Removes temporary files like .pyc files and the __pycache__ directory to clean up the workspace.
+
+5. make help
+Displays a list of available commands and their descriptions.
+
