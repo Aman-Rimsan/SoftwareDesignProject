@@ -1,15 +1,16 @@
 import csv
-
-class ProductDatabase:
+# Class to manage the stored product data from the csv
+class ProductDatabase: 
     def __init__(self, filename="Estock.csv"):
         self.filename = filename
         self.products = []
         self.read_file()
-
+# Read product data from the csv file
     def read_file(self):
             try:
                 with open(self.filename, mode='r', newline='') as file:
                     reader = csv.DictReader(file)
+                    # Store product info
                     self.products = [{"name": row["name"].strip().lower(),
                                     "price": float(row["price"]),
                                     "stock": int(row["stock"]),
@@ -19,7 +20,7 @@ class ProductDatabase:
                 self.write_file()
             except Exception as e:
              print(f"Error reading file: {e}")
-
+# Writes product data back to the csv
     def write_file(self):
         try:
             with open(self.filename, mode='w', newline='') as file:
@@ -29,7 +30,7 @@ class ProductDatabase:
                 writer.writerows(self.products)
         except Exception as e:
             print(f"Error writing to file: {e}")
-
+# Displays the current list of products
     def view_products(self):
             if not self.products:
                 print("\nNo products available.")
@@ -55,7 +56,7 @@ class ProductDatabase:
                 print(f"{name.ljust(name_width)} {price.ljust(price_width)} {stock.ljust(stock_width)} {category.ljust(category_width)}")
 
             print(f"\nTotal Products: {len(self.products)}")
-
+# adds new product to the database
     def add_product(self):
         category = input("Enter product category (e.g., GPU, CPU, RAM, etc.): ").strip().lower()
         name = input("Enter product name: ").strip().lower()
@@ -74,7 +75,7 @@ class ProductDatabase:
         self.products.append({"name": name, "price": price, "stock": stock, "category": category})
         self.write_file()
         print(f"Product '{name}' added successfully.")
-
+# Edits the price and stock of a product
     def edit_product(self):
         name = input("Enter product name to edit: ").strip().lower()
         for product in self.products:
@@ -94,7 +95,7 @@ class ProductDatabase:
                     print("Invalid input. Please enter valid numbers.")
                     return
         print(f"Product '{name}' not found.")
-
+# Removes a product by name
     def remove_product(self):
             name = input("Enter the product name to remove: ").strip().lower()
             matching_products = [p for p in self.products if p['name'] == name]
@@ -106,7 +107,7 @@ class ProductDatabase:
             self.products = [p for p in self.products if p['name'] != name]
             self.write_file()
             print(f"Product '{name}' removed successfully.")
-
+# sorts the product by either name/price/stock or by ascending or descending order
     def sort_products(self):
         option = input("Sort by (name/price/stock): ").strip().lower()
         order = input("Sort order (asc/desc): ").strip().lower()
@@ -120,7 +121,7 @@ class ProductDatabase:
                 print(f"Error sorting products: {e}")
         else:
             print("Invalid sorting option.")
-
+# Searches for products by name
     def search_products(self):
         search_term = input("Enter product name to search: ").strip().lower()
         results = [p for p in self.products if search_term in p['name']]
@@ -139,7 +140,7 @@ class ProductDatabase:
             stock = str(product['stock'])
             print(f"{name.ljust(20)} {price.ljust(10)} {stock.ljust(10)}")
         print(f"\nTotal Matches: {len(results)}")
-    
+# Filter products     
     def filter_products(self, category):
         category = category.strip().lower()
         filtered_products = [p for p in self.products if p['category'] == category]
