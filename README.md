@@ -78,14 +78,14 @@ Available Commands
 Runs the Stock.py script.
 
 2. make run_ui
-Runs the UI2.py script. This is the default command when you run make without arguments.
+- Runs the UI2.py script. This is the default command when you run make without arguments.
 
 3. make install
-Installs dependencies listed in requirements.txt. If the file is not found, it skips installation and shows a message.
+- Installs dependencies listed in requirements.txt. If the file is not found, it skips installation and shows a message.
 
 4. make clean
-Removes temporary files like .pyc files and the __pycache__ directory to clean up the workspace.
+- Removes temporary files like .pyc files and the __pycache__ directory to clean up the workspace.
 
 5. make help
-Displays a list of available commands and their descriptions.
+- Displays a list of available commands and their descriptions.
 
