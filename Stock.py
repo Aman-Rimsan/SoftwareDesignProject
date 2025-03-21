@@ -96,7 +96,7 @@ class ProductDatabase:
                     return
         print(f"Product '{name}' not found.")
 # Removes a product by name
-    def remove_product(self):
+    def remove_product(self): # Prompt the user to enter the product name and normalize it (strip spaces and convert to lowercase)
             name = input("Enter the product name to remove: ").strip().lower()
             matching_products = [p for p in self.products if p['name'] == name]
 
@@ -106,7 +106,8 @@ class ProductDatabase:
 
             self.products = [p for p in self.products if p['name'] != name]
             self.write_file()
-            print(f"Product '{name}' removed successfully.")
+            print(f"Product '{name}' removed successfully.")         # Confirm successful removal
+
 # sorts the product by either name/price/stock or by ascending or descending order
     def sort_products(self):
         option = input("Sort by (name/price/stock): ").strip().lower()
