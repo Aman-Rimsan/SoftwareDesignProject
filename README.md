@@ -75,7 +75,7 @@ Variables
 
 Available Commands
 1. make run_stock
-Runs the Stock.py script.
+- Runs the Stock.py script.
 
 2. make run_ui
 - Runs the UI2.py script. This is the default command when you run make without arguments.
