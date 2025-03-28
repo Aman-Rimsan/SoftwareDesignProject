@@ -7,18 +7,18 @@ class ProductDatabase:
         self.read_file()
 
     def read_file(self):
-            try:
-                with open(self.filename, mode='r', newline='') as file:
-                    reader = csv.DictReader(file)
-                    self.products = [{"name": row["name"].strip().lower(),
-                                    "price": float(row["price"]),
-                                    "stock": int(row["stock"]),
-                                    "category": row["category"].strip().lower()} for row in reader]
-            except FileNotFoundError:
-                print("File not found. Creating a new one.")
-                self.write_file()
-            except Exception as e:
-             print(f"Error reading file: {e}")
+        try:
+            with open(self.filename, mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                self.products = [{"name": row["name"].strip().lower(),
+                                  "price": float(row["price"]),
+                                  "stock": int(row["stock"]),
+                                  "category": row["category"].strip().lower()} for row in reader]
+        except FileNotFoundError:
+            print("File not found. Creating a new one.")
+            self.write_file()
+        except Exception as e:
+            print(f"Error reading file: {e}")
 
     def write_file(self):
         try:
@@ -31,30 +31,30 @@ class ProductDatabase:
             print(f"Error writing to file: {e}")
 
     def view_products(self):
-            if not self.products:
-                print("\nNo products available.")
-                return
+        if not self.products:
+            print("\nNo products available.")
+            return
 
-            # Calculate column widths dynamically
-            name_width = max(len(p["name"]) for p in self.products) + 2
-            price_width = 10
-            stock_width = 10
-            category_width = max(len(p["category"]) for p in self.products) + 2
+        # Calculate column widths dynamically
+        name_width = max(len(p["name"]) for p in self.products) + 2
+        price_width = 10
+        stock_width = 10
+        category_width = max(len(p["category"]) for p in self.products) + 2
 
-            # Print header
-            print("\nInventory:")
-            print(f"{'Name'.ljust(name_width)} {'Price ($)'.ljust(price_width)} {'Stock'.ljust(stock_width)} {'Category'.ljust(category_width)}")
-            print("=" * (name_width + price_width + stock_width + category_width))
+        # Print header
+        print("\nInventory:")
+        print(f"{'Name'.ljust(name_width)} {'Price ($)'.ljust(price_width)} {'Stock'.ljust(stock_width)} {'Category'.ljust(category_width)}")
+        print("=" * (name_width + price_width + stock_width + category_width))
 
-            # Print product details
-            for product in self.products:
-                name = product['name'].title()  # Capitalize properly
-                price = f"${product['price']:.2f}"
-                stock = str(product['stock'])
-                category = product['category'].title()  # Capitalize category
-                print(f"{name.ljust(name_width)} {price.ljust(price_width)} {stock.ljust(stock_width)} {category.ljust(category_width)}")
+        # Print product details
+        for product in self.products:
+            name = product['name'].title()  # Capitalize properly
+            price = f"${product['price']:.2f}"
+            stock = str(product['stock'])
+            category = product['category'].title()  # Capitalize category
+            print(f"{name.ljust(name_width)} {price.ljust(price_width)} {stock.ljust(stock_width)} {category.ljust(category_width)}")
 
-            print(f"\nTotal Products: {len(self.products)}")
+        print(f"\nTotal Products: {len(self.products)}")
 
     def add_product(self):
         category = input("Enter product category (e.g., GPU, CPU, RAM, etc.): ").strip().lower()
@@ -96,16 +96,16 @@ class ProductDatabase:
         print(f"Product '{name}' not found.")
 
     def remove_product(self):
-            name = input("Enter the product name to remove: ").strip().lower()
-            matching_products = [p for p in self.products if p['name'] == name]
+        name = input("Enter the product name to remove: ").strip().lower()
+        matching_products = [p for p in self.products if p['name'] == name]
 
-            if not matching_products:
-                print(f"Product '{name}' not found.")
-                return
+        if not matching_products:
+            print(f"Product '{name}' not found.")
+            return
 
-            self.products = [p for p in self.products if p['name'] != name]
-            self.write_file()
-            print(f"Product '{name}' removed successfully.")
+        self.products = [p for p in self.products if p['name'] != name]
+        self.write_file()
+        print(f"Product '{name}' removed successfully.")
 
     def sort_products(self):
         option = input("Sort by (name/price/stock): ").strip().lower()
@@ -139,7 +139,7 @@ class ProductDatabase:
             stock = str(product['stock'])
             print(f"{name.ljust(20)} {price.ljust(10)} {stock.ljust(10)}")
         print(f"\nTotal Matches: {len(results)}")
-    
+
     def filter_products(self, category):
         category = category.strip().lower()
         filtered_products = [p for p in self.products if p['category'] == category]
@@ -163,40 +163,97 @@ class ProductDatabase:
             print(f"{name.ljust(name_width)} {price.ljust(price_width)} {stock.ljust(stock_width)}")
         print(f"\nTotal Products in '{category}': {len(filtered_products)}")
 
+    def export_inventory(self):
+        export_filename = "exported_inventory.csv"
+        try:
+            with open(export_filename, mode='w', newline='') as file:
+                fieldnames = ["name", "price", "stock", "category"]
+                writer = csv.DictWriter(file, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(self.products)
+            print(f"Inventory exported successfully to {export_filename}.")
+        except Exception as e:
+            print(f"Error exporting inventory: {e}")
+
+    @staticmethod
+    def login():
+        print("\nLogin")
+        username = input("Enter your ID (or press Enter to continue as a normal user): ").strip()
+
+        if username == "":
+            print("Logged in as a normal user.")
+            return "user"
+
+        try:
+            with open("data.csv", mode='r', newline='') as file:
+                reader = csv.DictReader(file)
+                users = {row['ID'].strip(): {"name": row['Name'].strip(),
+                                             "age": row['Age'].strip(),
+                                             "gender": row['Gender'].strip(),
+                                             "program": row['Program'].strip()}
+                         for row in reader}
+
+                if username in users:
+                    print(f"Login successful! Welcome, {users[username]['name']}.")
+                    return "admin"
+                else:
+                    print("Invalid ID. Logged in as a normal user.")
+                    return "user"
+        except FileNotFoundError:
+            print("User database not found. Logged in as a normal user.")
+            return "user"
+        except Exception as e:
+            print(f"Error during login: {e}")
+            return "user"
+
 
 def main_menu():
     db = ProductDatabase()
+    role = None
+
     while True:
+        if not role:
+            role = ProductDatabase.login()
+
         print("\nInventory Management System")
         print("1. View Products")
-        print("2. Add Product")
-        print("3. Edit Product")
-        print("4. Remove Product")
-        print("5. Sort Products")
-        print("6. Search Product")
-        print("7. Filter Products by Category")  # New option
-        print("8. Exit")
+        print("2. Search Product")
+        print("3. Filter Products by Category")
+        if role == "admin":
+            print("4. Add Product")
+            print("5. Edit Product")
+            print("6. Remove Product")
+            print("7. Sort Products")
+            print("8. Export Inventory")
+        print("9. Logout")
+        print("10. Exit")
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
             db.view_products()
         elif choice == "2":
-            db.add_product()
-        elif choice == "3":
-            db.edit_product()
-        elif choice == "4":
-            db.remove_product()
-        elif choice == "5":
-            db.sort_products()
-        elif choice == "6":
             db.search_products()
-        elif choice == "7":
+        elif choice == "3":
             category = input("Enter category to filter by: ")
             db.filter_products(category)
-        elif choice == "8":
+        elif role == "admin" and choice == "4":
+            db.add_product()
+        elif role == "admin" and choice == "5":
+            db.edit_product()
+        elif role == "admin" and choice == "6":
+            db.remove_product()
+        elif role == "admin" and choice == "7":
+            db.sort_products()
+        elif role == "admin" and choice == "8":
+            db.export_inventory()
+        elif choice == "9":
+            print("Logging out...")
+            role = None
+        elif choice == "10":
             print("Exiting program.")
             break
         else:
             print("Invalid choice. Please try again.")
+
 
 main_menu()
