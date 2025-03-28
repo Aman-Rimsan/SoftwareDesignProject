@@ -1,5 +1,4 @@
-
-Z## Phase 1 - Planning & initial Development
+## Phase 1 - Planning & initial Development
 In this phase, our goal was to establish a foundation for our E-Stock inventory tracking system by defining its functionalities, splitting the functions into digestible iterations, and building a base for responsibilities. We aimed to create a clear roadmap for implementation while ensuring that the system meets project requirements.
 
 To achieve this, we:
