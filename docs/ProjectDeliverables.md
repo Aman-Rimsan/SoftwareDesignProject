@@ -1,4 +1,5 @@
-## Phase 1 - Planning & initial Development
+
+Z## Phase 1 - Planning & initial Development
 In this phase, our goal was to establish a foundation for our E-Stock inventory tracking system by defining its functionalities, splitting the functions into digestible iterations, and building a base for responsibilities. We aimed to create a clear roadmap for implementation while ensuring that the system meets project requirements.
 
 To achieve this, we:
@@ -40,3 +41,5 @@ To achieve this, we:
 - Opaque Box: testing from the end-user’s perspective.
 - Created test cases using a consistent structure: Each test includes inputs and expected outcomes.
 - Mapped tests to system requirements and user stories, ensuring all critical features were tested, including high-risk areas like CSV file operations and edge cases.
+
+Moving forware, we are now ready to proceed confidently into the next development phase. Our focus will shift toward enhancing the user experience, expanding functionality, and refining any weak areas identified through testing.
