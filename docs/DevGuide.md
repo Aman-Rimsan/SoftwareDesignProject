@@ -20,3 +20,7 @@ The program involves developing an inventory tracking system tailored for a tech
 
 * User interaction: Displays all the stock and has buttons for each functionality, also has a dark mode.
 
+## Build
+
+## Tests
+
