@@ -77,28 +77,25 @@ class ProductDatabase:
 
         print(f"\nTotal Products: {len(self.products)}")
 
-    def add_product(self, name, price, stock, category):
+    def add_product(self, name=None, price=None, stock=None, category=None):
         """Add a new product to the database."""
-        category = input("Enter product category (e.g., GPU, CPU, RAM, etc.): ").strip().lower()
-        name = input("Enter product name: ").strip().lower()
-        
-        # Check for duplicate product
+        if None in (name, price, stock, category):  # Interactive mode
+            category = input("Enter product category (e.g., GPU, CPU, RAM, etc.): ").strip().lower()
+            name = input("Enter product name: ").strip().lower()
+            price = input("Enter product price: ")
+            stock = input("Enter initial stock: ")
+            
         if any(p['name'] == name for p in self.products):
-            print("Product already exists.")
-            return
+            return "Product already exists."
             
         try:
-            # Validate and convert numeric inputs
-            price = float(input("Enter product price: "))
-            stock = int(input("Enter initial stock: "))
+            price = float(price)
+            stock = int(stock)
             if price < 0 or stock < 0:
-                print("Stock and price must be non-negative.")
-                return
+                return "Stock and price must be non-negative."
         except ValueError:
-            print("Invalid input. Price must be a number, stock must be an integer.")
-            return
+            return "Invalid input. Price must be a number, stock must be an integer."
             
-        # Add product and save to file
         self.products.append({
             "name": name, 
             "price": price, 
@@ -106,46 +103,53 @@ class ProductDatabase:
             "category": category
         })
         self.write_file()
-        print(f"Product '{name}' added successfully.")
+        return f"Product '{name}' added successfully."
 
-    def edit_product(self, name, new_price, new_stock):
+    def search_products(self, search_term):
+        """Search for products by name (case-insensitive partial match)."""
+        search_term = search_term.strip().lower()
+        return [p for p in self.products if search_term in p['name']]
+
+    def edit_product(self, name=None, new_price=None, new_stock=None):
         """Edit an existing product's price and stock."""
-        name = input("Enter product name to edit: ").strip().lower()
+        if None in (name, new_price, new_stock):  # Interactive mode
+            name = input("Enter product name to edit: ").strip().lower()
+            new_price = input(f"Enter new price for {name}: ")
+            new_stock = input(f"Enter new stock for {name}: ")
+        
         for product in self.products:
-            if product['name'] == name:
+            if product['name'] == name.strip().lower():
                 try:
-                    # Get and validate new values
-                    new_price = float(input(f"Enter new price for {name} (current: {product['price']}): "))
-                    new_stock = int(input(f"Enter new stock for {name} (current: {product['stock']}): "))
+                    new_price = float(new_price)
+                    new_stock = int(new_stock)
                     if new_price < 0 or new_stock < 0:
-                        print("Price and stock must be non-negative.")
-                        return
+                        return "Price and stock must be non-negative."
                         
-                    # Update product data
                     product['price'] = new_price
                     product['stock'] = new_stock
                     self.write_file()
-                    print(f"Product '{name}' updated successfully.")
-                    return
+                    return f"Product '{name}' updated successfully."
                 except ValueError:
-                    print("Invalid input. Please enter valid numbers.")
-                    return
-        print(f"Product '{name}' not found.")
+                    return "Invalid input. Please enter valid numbers."
+        return f"Product '{name}' not found."
 
-    def remove_product(self):
+    def remove_product(self, name=None):
         """Remove a product from the database."""
-        name = input("Enter the product name to remove: ").strip().lower()
+        if name is None:  # Interactive mode
+            name = input("Enter the product name to remove: ").strip().lower()
+        else:
+            name = name.strip().lower()
+
         matching_products = [p for p in self.products if p['name'] == name]
 
         if not matching_products:
-            print(f"Product '{name}' not found.")
-            return
+            return f"Product '{name}' not found."
 
         # Filter out the product to remove
         self.products = [p for p in self.products if p['name'] != name]
         self.write_file()
-        print(f"Product '{name}' removed successfully.")
-
+        return f"Product '{name}' removed successfully."
+    
     def sort_products(self):
         """Sort products by specified field and order."""
         option = input("Sort by (name/price/stock): ").strip().lower()
@@ -165,26 +169,6 @@ class ProductDatabase:
         else:
             print("Invalid sorting option.")
 
-    def search_products(self, search_term):
-        """Search products by name (partial match, case-insensitive)."""
-        search_term = input("Enter product name to search: ").strip().lower()
-        results = [p for p in self.products if search_term in p['name']]
-
-        if not results:
-            print("No matching products found.")
-            return
-
-        # Display search results
-        print("\nSearch Results:")
-        print(f"{'Name'.ljust(20)} {'Price ($)'.ljust(10)} {'Stock'.ljust(10)}")
-        print("=" * 40)
-
-        for product in results:
-            name = product['name'].title()
-            price = f"${product['price']:.2f}"
-            stock = str(product['stock'])
-            print(f"{name.ljust(20)} {price.ljust(10)} {stock.ljust(10)}")
-        print(f"\nTotal Matches: {len(results)}")
 
     def filter_products(self, category):
         """Filter products by specified category."""
@@ -261,59 +245,59 @@ class ProductDatabase:
             return "user"
 
 
-def main_menu():
-    """Main menu loop for the inventory management system."""
-    db = ProductDatabase()  # Initialize database
-    role = None  # Current user role
+    def main_menu():
+        """Main menu loop for the inventory management system."""
+        db = ProductDatabase()  # Initialize database
+        role = None  # Current user role
 
-    while True:
-        # Prompt for login if not already logged in
-        if not role:
-            role = ProductDatabase.login()
+        while True:
+            # Prompt for login if not already logged in
+            if not role:
+                role = ProductDatabase.login()
 
-        # Display menu options based on user role
-        print("\nInventory Management System")
-        print("1. View Products")
-        print("2. Search Product")
-        print("3. Filter Products by Category")
-        print("4. Sort Products")  # Available to all users
-        if role == "admin":
-            print("5. Add Product")
-            print("6. Edit Product")
-            print("7. Remove Product")
-            print("8. Export Inventory")
-        print("9. Logout")
-        print("10. Exit")
-        
-        choice = input("Enter your choice: ").strip()
+            # Display menu options based on user role
+            print("\nInventory Management System")
+            print("1. View Products")
+            print("2. Search Product")
+            print("3. Filter Products by Category")
+            print("4. Sort Products")  # Available to all users
+            if role == "admin":
+                print("5. Add Product")
+                print("6. Edit Product")
+                print("7. Remove Product")
+                print("8. Export Inventory")
+            print("9. Logout")
+            print("10. Exit")
+            
+            choice = input("Enter your choice: ").strip()
 
-        # Handle menu choices
-        if choice == "1":
-            db.view_products()
-        elif choice == "2":
-            db.search_products()
-        elif choice == "3":
-            category = input("Enter category to filter by: ")
-            db.filter_products(category)
-        elif choice == "4":
-            db.sort_products()
-        elif role == "admin" and choice == "5":
-            db.add_product()
-        elif role == "admin" and choice == "6":
-            db.edit_product()
-        elif role == "admin" and choice == "7":
-            db.remove_product()
-        elif role == "admin" and choice == "8":
-            db.export_inventory()
-        elif choice == "9":
-            print("Logging out...")
-            role = None  # Reset role to force re-login
-        elif choice == "10":
-            print("Exiting program.")
-            break
-        else:
-            print("Invalid choice. Please try again.")
+            # Handle menu choices
+            if choice == "1":
+                db.view_products()
+            elif choice == "2":
+                db.search_products()
+            elif choice == "3":
+                category = input("Enter category to filter by: ")
+                db.filter_products(category)
+            elif choice == "4":
+                db.sort_products()
+            elif role == "admin" and choice == "5":
+                db.add_product()
+            elif role == "admin" and choice == "6":
+                db.edit_product()
+            elif role == "admin" and choice == "7":
+                db.remove_product()
+            elif role == "admin" and choice == "8":
+                db.export_inventory()
+            elif choice == "9":
+                print("Logging out...")
+                role = None  # Reset role to force re-login
+            elif choice == "10":
+                print("Exiting program.")
+                break
+            else:
+                print("Invalid choice. Please try again.")
 
 
-if __name__ == "__main__":
-    main_menu()  # Start the application
+    if __name__ == "__main__":
+        main_menu()  # Start the application
