@@ -33,7 +33,7 @@ Filter Products: Allow user to search the product by the range of minimum and ma
 Persistent Storage: Uses a CSV file (Estock.csv) to store product data.
 
 ## Installation
-Python
+Python, Tkinter (for GUI)
 
 ## Setup
 Clone the Repository: Download the project files from GitHub or another source.
