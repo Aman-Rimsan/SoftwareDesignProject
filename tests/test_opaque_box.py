@@ -3,16 +3,12 @@ try:
     import tkinter as tk
     from UI2 import InventoryGUI
     tk_available = True
-except ImportError:
+except (ImportError, RuntimeError):  # Added RuntimeError for TclError
     tk_available = False
 
 from Stock import ProductDatabase
-from UI2 import InventoryGUI
-import tkinter as tk
-from tkinter import messagebox
 import csv
 import os
-
 
 def test_admin_vs_user_permissions(monkeypatch, capsys):
     """Test admin vs user role permissions."""
@@ -67,29 +63,32 @@ def test_search_functionality(capsys):
 def test_gui_admin_features(monkeypatch):
     """Test GUI admin-specific features."""
     print("\n=== Testing GUI admin features ===")
-    root = tk.Tk()
-    root.withdraw()
-    
-    # Mock admin login
-    gui = InventoryGUI(root)
-    
-    # Simulate admin login by bypassing the login screen
-    gui.role = "admin"
-    gui.login_frame.destroy()  # Remove login frame
-    gui.create_main_interface()  # Create main interface
-    
-    # Find the button frame
-    button_texts = []
-    for widget in gui.master.winfo_children():
-        if isinstance(widget, tk.Frame):
-            buttons = [w for w in widget.winfo_children() if isinstance(w, tk.Button)]
-            button_texts = [b.cget("text") for b in buttons]
-            break
-    
-    # Verify admin buttons are present
-    admin_buttons = ["Add Product", "Edit Product", "Remove Product"]
-    for button in admin_buttons:
-        assert button in button_texts, f"Admin button '{button}' not found"
-    
-    print("✓ Verified all admin buttons appear")
-    root.destroy()
+    try:
+        root = tk.Tk()
+        root.withdraw()
+        
+        # Mock admin login
+        gui = InventoryGUI(root)
+        
+        # Simulate admin login by bypassing the login screen
+        gui.role = "admin"
+        gui.login_frame.destroy()  # Remove login frame
+        gui.create_main_interface()  # Create main interface
+        
+        # Find the button frame
+        button_texts = []
+        for widget in gui.master.winfo_children():
+            if isinstance(widget, tk.Frame):
+                buttons = [w for w in widget.winfo_children() if isinstance(w, tk.Button)]
+                button_texts = [b.cget("text") for b in buttons]
+                break
+        
+        # Verify admin buttons are present
+        admin_buttons = ["Add Product", "Edit Product", "Remove Product"]
+        for button in admin_buttons:
+            assert button in button_texts, f"Admin button '{button}' not found"
+        
+        print("✓ Verified all admin buttons appear")
+        root.destroy()
+    except tk.TclError as e:
+        pytest.skip(f"Tkinter not properly installed: {e}")

@@ -2,6 +2,9 @@
 Inventory Management System - Console Version
 This script provides a command-line interface for managing product inventory.
 Features include viewing, adding, editing, searching, sorting products, and role-based access control.
+
+
+pytest test_clear_box.py test_translucent_box.py test_opaque_box.py -v
 """
 
 import csv
@@ -26,13 +29,20 @@ class ProductDatabase:
         try:
             with open(self.filename, mode='r', newline='') as file:
                 reader = csv.DictReader(file)
+                # Load all rows into a list to check if there's any data after header
+                rows = list(reader)
+                if not rows:
+                    print("File is empty. Initializing with empty inventory.")
+                    self.products = []
+                    return
+
                 # Create product dictionaries with normalized data
                 self.products = [{
                     "name": row["name"].strip().lower(),
                     "price": float(row["price"]),
                     "stock": int(row["stock"]),
                     "category": row["category"].strip().lower()
-                } for row in reader]
+                } for row in rows]
         except FileNotFoundError:
             print("File not found. Creating a new one.")
             self.write_file()  # Create file if it doesn't exist

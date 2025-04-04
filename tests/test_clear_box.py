@@ -19,7 +19,9 @@ def test_read_file_with_empty_file(setup_empty_file, capsys):
     print("\n=== Testing read_file() with empty file ===")
     db = ProductDatabase()
     captured = capsys.readouterr()
-    assert "File not found. Creating a new one." in captured.out
+    # Check both stdout and stderr since the message might be in either
+    assert "File is empty. Initializing with empty inventory." in captured.err or \
+           "File is empty. Initializing with empty inventory." in captured.out
     assert db.products == []
     print("✓ Verified empty file handling works correctly")
 
