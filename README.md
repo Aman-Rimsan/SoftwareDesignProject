@@ -40,7 +40,11 @@ Python, Tkinter (for GUI)
 - Once you're in the desired file type the command **git clone** with the url **https://github.com/Aman-Rimsan/SoftwareDesignProject.git**
 - Now that you've cloned the repository go into the github file and type **code .**, this will open all the files in the repo in your default IDE. We are using vscode as our IDE.
 - Now that your IDE is up, you can either run the terminal version of the software in **Stock.py** or the GUI version in **UI2.py**
+### IDE
 - Simply run the python files the way your IDE would want to, for vscode there is a play button near the top right of your screen
+### Packaged Executable
+- To run the packaged executable simply type `Run_Application.bat` in the terminal
+- Once ran the terminal will ask whether you want to run the terminal version or GUI version of the application
 
 ## Usage
 Inventory Management System
