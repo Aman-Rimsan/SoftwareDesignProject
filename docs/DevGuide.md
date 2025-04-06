@@ -37,7 +37,7 @@ The E-Stock Inventory Management System can be built and run using several metho
 #### 1. Using the Interactive Launcher (Recommended for Windows Users)
 The system includes a user-friendly launcher that requires no command-line knowledge:
 - Navigate to the project root directory
-- Double-click `Run_Application.bat`
+- Type the command `Run_Application.bat` into your terminal
 - Select the desired option from the menu:
   - Option 1: Run GUI Version
   - Option 2: Run Console Version
