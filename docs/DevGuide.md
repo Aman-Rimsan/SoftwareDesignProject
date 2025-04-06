@@ -22,6 +22,8 @@ The program involves developing an inventory tracking system tailored for a tech
 
 ## Diagrams
 ![image](https://github.com/user-attachments/assets/793eb187-e0ff-4967-932e-bba2a9272a19)
+![image](https://github.com/user-attachments/assets/9b2c41d0-d176-418d-b79c-676a48bf5ba2)
+
 
 
 ## Build
