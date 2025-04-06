@@ -29,7 +29,7 @@ The program involves developing an inventory tracking system tailored for a tech
 The E-Stock Inventory Management System can be built and run using several methods:
 
 ### Prerequisites
-- Python 3.x
+- Python 3.0+
 - Tkinter (included with most Python installations)
 
 ### Build Methods
