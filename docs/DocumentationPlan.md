@@ -19,5 +19,5 @@ Who's Working on it: Abbas Akbar
 * Will clarify any vague or confusing areas using step-by-step examples
 * Other diagrams may be added if any concepts need further understanding
 
-Who's working on it: Abbas Akbar
+Who's working on it: Amanulla Mohammed Rimsan
 
