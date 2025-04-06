@@ -35,12 +35,11 @@ Persistent Storage: Uses a CSV file (Estock.csv) to store product data.
 ## Installation
 Python, Tkinter (for GUI)
 
-## Setup
-Clone the Repository: Download the project files from GitHub or another source.
-
-Ensure Estock.csv Exists
-
-Run the Script
+## How To Run
+- First go to your terminal and go to the desired file where you want to clone the repository
+- Once you're in the desired file type the command **git clone** with the url **https://github.com/Aman-Rimsan/SoftwareDesignProject.git**
+- Now that you've cloned the repository go into the github file and type **code .**, this will open all the files in the repo in your default IDE. We are using vscode as our IDE.
+- Now that your IDE is up, open up the terminal in it and ...
 
 ## Usage
 Inventory Management System
