@@ -42,3 +42,15 @@ To achieve this, we:
 - Mapped tests to system requirements and user stories, ensuring all critical features were tested, including high-risk areas like CSV file operations and edge cases.
 
 Moving forware, we are now ready to proceed confidently into the next development phase. Our focus will shift toward enhancing the user experience, expanding functionality, and refining any weak areas identified through testing.
+
+## Phase 4 - Final Product Submission
+In this phase, we finalized and submitted the complete E-Stock system, ensuring that all required deliverables were properly documented, tested, and ready for deployment. This phase focused on wrapping up development and organizing all project materials.
+
+To achieve this, we:
+- Submitted the final codebase and all relevant documentation to the GitHub repository.
+- Included a complete system-wide test report in TestReport.md, detailing test cases, results, and any bugs found.
+- Provided deployment instructions in the README.md, including how to run the application and executable files.
+- Outlined individual team contributions, summarized by role and responsibilities.
+- Demonstrated all final features of the application, including role-based access, inventory management functions, and UI interactions.
+
+In short, we finalized the E-Stock application, and ensured it was well-documented, tested, and ready.
